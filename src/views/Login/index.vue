@@ -1,5 +1,3 @@
 <template>
-    <div>
-        我是登录页
-    </div>
+    我是 Login 页面
 </template>
