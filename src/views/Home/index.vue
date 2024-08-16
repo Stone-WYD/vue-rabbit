@@ -1,5 +1,24 @@
+<script setup>
+import HomeCategory from './components/HomeCategory.vue'
+import HomeBanner from './components/HomeBanner.vue'
+import HomeNew from './components/HomeNew.vue'
+import HomeHot from './components/HomeHot.vue'
+import homeProduct from './components/HomeProduct.vue'
+</script>
+
 <template>
-    <div style="height: 1000px;">
-        我是 home 页面
-    </div>
+  <div class="container">
+    <HomeCategory />
+    <HomeBanner />
+  </div>
+  <HomeNew />
+  <HomeHot />
+  <homeProduct />
 </template>
+
+<style scoped lang="scss">
+.outer {
+  display: flex;
+  flex-direction: column;
+}
+</style>
