@@ -15,10 +15,3 @@ import homeProduct from './components/HomeProduct.vue'
   <HomeHot />
   <homeProduct />
 </template>
-
-<style scoped lang="scss">
-.outer {
-  display: flex;
-  flex-direction: column;
-}
-</style>

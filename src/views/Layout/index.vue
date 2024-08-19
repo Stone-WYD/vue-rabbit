@@ -10,23 +10,15 @@ import { onMounted } from 'vue'
 
 const categoryStore = useCategoryStore();
 // 触发获取导航目录信息
-onMounted(() => {categoryStore.getCategory()})
+onMounted(() => { categoryStore.getCategory() })
 </script>
 
 <template>
-  <div class="outer">
-    <LayoutFixed />
-    <LayoutNav />
-    <LayoutHeader />
-    <RouterView />
-    <LayoutFooter />
-  </div>
-  
-</template>
 
-<style scoped lang="scss">
-.outer {
-  display: flex;
-  flex-direction: column;
-}
-</style>
+  <LayoutFixed />
+  <LayoutNav />
+  <LayoutHeader />
+  <RouterView />
+  <LayoutFooter />
+
+</template>
