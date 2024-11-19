@@ -1,15 +1,22 @@
 <script setup>
+import DetailHot from './composables/DetailHot.vue'
 import {getDetail} from '@/apis/detail.js'
 import { onMounted,ref } from 'vue';
-import {useRoute} from 'vue-router'
+import {useRoute, onBeforeRouteUpdate} from 'vue-router'
 const goods = ref({})
 const route = useRoute()
-const getGoods = async () => {
-    const res = await getDetail(route.params.id)
+const getGoods = async (id = route.params.id) => {
+    const res = await getDetail(id)
     goods.value = res.result
 }
 
 onMounted(() => getGoods())
+
+onBeforeRouteUpdate((to) => {
+    goods.value.details = null
+    getGoods(to.params.id);
+});
+
 </script>
 
 <template>
@@ -122,7 +129,10 @@ onMounted(() => getGoods())
             </div>
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
-
+                <!-- 24小时 -->
+                <DetailHot :hot-type="1"/>
+                <!-- 周 -->
+                <DetailHot :hot-type="2"/>
             </div>
           </div>
         </div>
