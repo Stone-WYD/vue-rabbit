@@ -2,13 +2,18 @@
 
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useUserStore } from "./user";
-import  {insertCartAPI, findNewCartListAPI} from '@/apis/cart'
+import { useUserStore } from "./userStore";
+import  {insertCartAPI, findNewCartListAPI, delCartAPI} from '@/apis/cart'
 
 export const useCartStore = defineStore('cart', () => {
     // 是否登录
     const userStore = useUserStore()
     const isLogin = computed(() => userStore.userInfo.token)
+    // 更新购物车
+    const updateNewList = async () => {
+        const res = await findNewCartListAPI()
+        cartList.value = res.result
+    }
 
     // 1. 定义 state - cartList
     const cartList = ref([])
@@ -16,12 +21,10 @@ export const useCartStore = defineStore('cart', () => {
     const addCart = async (goods) => {
         const {skuId, count} = goods
         // 添加购物车
-        if(isLogin) {
+        if(isLogin.value) {
             // 登录之后的加入购物车逻辑
-            console.log('传参为：', 'skuId: ',skuId, 'count: ',count)
            await insertCartAPI({skuId, count})
-           const res = await findNewCartListAPI()
-           cartList.value = res.result
+           updateNewList()
         } else {
             // 没有添加过，直接 push
             const item = cartList.value.find((item) => goods.skuId === item.skuId)
@@ -34,12 +37,21 @@ export const useCartStore = defineStore('cart', () => {
         }
         
     }
+
     // 3. 删除购物车商品
-    const delCart = (skuId) => {
-        // 1. 找到要删除的项的下标值 - splice
-        // 2. 使用数组的过滤方法 - filter
-        const idx = cartList.value.findIndex((item) => skuId === item.skuId)
-        cartList.value.splice(idx, 1) 
+    const delCart = async (skuId) => {
+        console.log('isLogin测试：', isLogin.value)
+        if( isLogin.value ){
+            // 调用删除接口实现接口购物车的删除功能
+            await delCartAPI([skuId])
+            // 更新购物车
+            updateNewList()
+        } else {
+            // 1. 找到要删除的项的下标值 - splice
+            // 2. 使用数组的过滤方法 - filter
+            const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+            cartList.value.splice(idx, 1) 
+        }
     }
     // 4. 计算属性
     const allCount = computed(() => 
