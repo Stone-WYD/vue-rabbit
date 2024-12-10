@@ -53,7 +53,12 @@ export const useCartStore = defineStore('cart', () => {
             cartList.value.splice(idx, 1) 
         }
     }
-    // 4. 计算属性
+    // 4. 清除购物车
+    const clearCart = () => {
+        cartList.value = []
+    }
+
+    // 5. 计算属性
     const allCount = computed(() => 
          cartList.value.reduce((a, c) => a + c.count, 0)
     )
@@ -68,7 +73,7 @@ export const useCartStore = defineStore('cart', () => {
         cartList.value.filter(item => item.selected === true).reduce((a, c) => a + c.count * c.price, 0)
     ) 
 
-    // 5. 单/全选功能
+    // 6. 单/全选功能
     const singleCheck = (skuId, selected) => {
         const item = cartList.value.find(item => item.skuId === skuId)
         item.selected = selected
@@ -76,8 +81,9 @@ export const useCartStore = defineStore('cart', () => {
     const allCheck = (selected) => {
         cartList.value.forEach(item => item.selected = selected)
     }
-    // 6. 是否全选
+    // 7. 是否全选
     const isAll = computed(() => cartList.value.every(item => item.selected))
-    return {cartList, allCount, allPrice, selectedCount, selectedPrice, isAll,
-         addCart, delCart, singleCheck, allCheck}
+
+    return {cartList, allCount, allPrice, selectedCount, selectedPrice, isAll, 
+        clearCart, addCart, delCart, singleCheck, allCheck}
 }, {persist: true})

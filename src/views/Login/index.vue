@@ -18,7 +18,7 @@ const userStore = useUserStore()
   })
   // 2. 准备规则对象
   const rules = ref({
-    account:[
+    account:[ 
        {required:true, message:'用户名不能为空', trigger:'blur'} 
     ],
     password:[
